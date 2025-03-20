@@ -1,17 +1,20 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const Lerner_userSchema = new mongoose.Schema({
     name : {
         type : String,
-        required : [true,"Provide name"]
+        required : [true,"Provide name"],
+        required : true
     },
     email : {
         type : String,
-        required : [true,"Provide name"]
+        required : [true,"Provide name"],
+        required : true
     },
     role : {
         type : String,
         enum : ['ADMIN',"LEARNER","EDUCATOR"],
+        required : true
         // default : "USER"
     },
     country : {
@@ -31,7 +34,8 @@ const userSchema = new mongoose.Schema({
     },
     expert : {
         type : String,
-        required : true
+        enum: ['YES','NO'],
+        default : 'NO',
 
     },
     coach : {
@@ -53,6 +57,86 @@ const userSchema = new mongoose.Schema({
     timestamps : true
 })
 
-const UserModel = mongoose.model("Users",userSchema)
+export const LearnerUserModel = mongoose.model("User-learners ",Lerner_userSchema)
 
-export default UserModel
+const Educator_userSchema = new mongoose.Schema({
+    name : {
+        type : String,
+        required : [true,"Provide name"],
+        required : true
+    },
+    email : {
+        type : String,
+        required : [true,"Provide name"],
+        required : true
+    },
+    role : {
+        type : String,
+        enum : ['ADMIN',"LEARNER","EDUCATOR"],
+        required : true
+        // default : "USER"
+    },
+    country : {
+        type : String,
+        required : true
+
+    },
+    nativeLanguage : {
+        type : String,
+        required : true
+
+    },
+    expert_area : {
+        type : Array,
+        required : true
+    },
+    services : {
+        type : String,
+        required : true
+
+    },
+    payment_details : {
+        type : Array,
+        required : true
+
+    },
+    documents : {
+        type : Array,
+        required : true
+    },
+
+    password : {
+        type : String,
+        required : true
+    },
+
+},{
+    timestamps : true,
+})
+
+export const EducatorUserModel = mongoose.model("User-educators", Educator_userSchema)
+
+const Admin = new mongoose.Schema({
+    name : {
+        type : String,
+        required : [true,"Provide name"],
+        required : true
+    },
+    email : {
+        type : String,
+        required : [true,"Provide name"],
+        required : true
+    },
+    role : {
+        type : String,
+        enum : ['ADMIN',"LEARNER","EDUCATOR"],
+        required : true
+        // default : "USER"
+    },
+    password : {
+        type : String,
+        required : true
+    },
+})
+
+export const AdminModel = mongoose.model("Admin", Admin)
