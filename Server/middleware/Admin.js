@@ -1,14 +1,19 @@
-import { AdminModel } from "../models/user";
-
+import { AdminModel } from "../models/user.js";
+import jwt from 'jsonwebtoken'
 export const admin = async(request,response,next)=>{
     try {
-       const  userId = request._id
-
-       const user = await AdminModel.findById(userId)
-
-       if(user.role !== 'ADMIN'){
+    
+    const token = request.cookies.accessToken;
+    if(!token){
+        return response.status(401).json({message:'please login'})
+    }
+    const {id} = jwt.verify(token , process.env.JWT_SECRET)
+    console.log(id);
+    
+       const user = await AdminModel.findById(id);
+       if(!user){
             return response.status(400).json({
-                message : "Permission denial",
+                message : "Permission denial only Admin has permision",
                 error : true,
                 success : false
             })
